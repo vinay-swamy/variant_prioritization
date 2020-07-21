@@ -8,6 +8,15 @@
 		"error" : "00log/{rule}_{wildcards}.err",
 		"extra" : ""
 	},
+	"n_split_vcf":
+	{
+		"partition": "quick",
+		"time": "4:00:00",
+		"mem": "8g",
+		"output": "00log/{rule}_{wildcards}.out",
+		"error": "00log/{rule}_{wildcards}.err",
+		"extra": ""
+	},
   "spliceai_wrapper" :
   {
     "partition" : "gpu",

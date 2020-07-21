@@ -2,9 +2,13 @@
 
 # to run snakemake as batch job
 # run in the data folder for this project
+snakefile=$1
+config=$2
+cluster_json=$3
+working_dir=$4
 
-module load snakemake/5.7.4 || exit 1
-mkdir -p 00log
+module load snakemake/5.4.4 || exit 1
+mkdir -p ${working_dir}/00log
 
 sbcmd="sbatch --cpus-per-task={threads} \
 --mem={cluster.mem} \
@@ -15,18 +19,12 @@ sbcmd="sbatch --cpus-per-task={threads} \
 {cluster.extra}"
 
 
-# if json given, then use it
-if [ ! -z "$2" ]; then
-	json="$2"
-# otherwise use the default
-else
-	json="/home/$USER/git/variant_prioritization/src/cluster.json"
-fi
 
-snakemake -s /home/$USER/git/variant_prioritization/src/Snakefile \
+snakemake -s $snakefile \
 -pr --local-cores 2 --jobs 1999 \
---configfile $1 \
---cluster-config $json \
+--configfile $config \
+--directory $working_dir \
+--cluster-config $cluster_json \
 --cluster "$sbcmd"  --latency-wait 120 --rerun-incomplete \
 -k --restart-times 1 --resources res=1
 

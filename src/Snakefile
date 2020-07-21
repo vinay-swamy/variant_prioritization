@@ -132,10 +132,11 @@ rule n_split_vcf:
 	input:
 		vcf = config['input_vcf']
 	output:
-		vcf = temp('temp/{sample}__{region}.vcf.gz'),
-		index = temp('temp/{sample}__{region}.vcf.gz.tbi')
+		vcf = 'temp/{sample}__{region}.vcf.gz',
+		index = 'temp/{sample}__{region}.vcf.gz.tbi'
 	shell:
 		"""
+		touch check/{wildcards.sample}_{wildcards.region}
 		export REF_CACHE=/scratch/$SLURM_JOB_ID/
 		module load {config[samtools_version]}
 		if [[ {wildcards.region} != "MT_contigs" ]]; then
